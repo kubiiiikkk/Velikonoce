@@ -3,172 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Velikonoční Lov</title>
+    <title>Velikonoční Dobrodružství</title>
     <style>
-        /* --- TADY ZAČÍNÁ KOUZLO VZHLEDU --- */
+        :root {
+            --sky: #bae6fd;
+            --grass: #4ade80;
+            --basket-brown: #92400e;
+            --basket-light: #d97706;
+        }
+
         body { 
-            font-family: 'Segoe UI', sans-serif; 
-            background: #e0f2fe; 
-            margin: 0; padding: 0; 
-            text-align: center;
-        }
-        .container { 
-            width: 90%; max-width: 400px; 
-            background: white; margin: 20px auto; 
-            border-radius: 30px; padding: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        h1 { color: #166534; }
-        
-        /* KOŠÍK */
-        .basket {
-            background: #d97706;
-            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.1) 10px, rgba(0,0,0,0.1) 20px);
-            border-radius: 20px 20px 40px 40px;
-            min-height: 100px; padding: 15px;
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 5px;
-            margin-top: 10px; border: 4px solid #92400e;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: var(--sky); margin: 0; padding: 0; 
+            display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh; overflow-x: hidden;
         }
 
-        /* VAJÍČKA */
+        /* --- DEKORACE --- */
+        .cloud {
+            position: absolute; background: white; border-radius: 50px;
+            opacity: 0.8; z-index: -1; animation: move 25s linear infinite;
+        }
+        .c1 { width: 120px; height: 40px; top: 10%; left: -150px; }
+        .c2 { width: 100px; height: 35px; top: 25%; left: -200px; animation-delay: 5s; }
+        @keyframes move { to { transform: translateX(120vw); } }
+
+        .grass {
+            position: fixed; bottom: 0; width: 100%; height: 50px;
+            background: var(--grass); border-top: 5px solid #22c55e; z-index: -1;
+        }
+
+        /* --- KARTA HRY --- */
+        .card {
+            width: 90%; max-width: 420px; background: rgba(255, 255, 255, 0.95);
+            margin: 20px auto; border-radius: 30px; padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2); border: 3px solid white;
+            text-align: center; box-sizing: border-box; z-index: 10;
+        }
+
+        h1 { color: #166534; margin: 0 0 15px 0; font-size: 1.8rem; }
+
+        /* --- ÚKOLY --- */
+        .quest-box { 
+            background: #fffbeb; border: 3px dashed #fcd34d; 
+            border-radius: 20px; padding: 20px; margin-bottom: 20px;
+        }
+        input { 
+            padding: 12px; border: 2px solid #ddd; border-radius: 15px;
+            width: 80%; font-size: 1.1rem; margin-bottom: 15px; outline: none;
+        }
+        .btn-check { 
+            background: #22c55e; color: white; border: none; padding: 12px 30px;
+            border-radius: 50px; font-weight: bold; font-size: 1.1rem;
+            box-shadow: 0 5px 0 #15803d; cursor: pointer; transition: 0.2s;
+        }
+        .btn-check:active { transform: translateY(3px); box-shadow: 0 2px 0 #15803d; }
+
+        /* --- KOŠÍK --- */
+        .basket-area { position: relative; margin-top: 50px; }
+        .basket-handle {
+            width: 160px; height: 90px; border: 10px solid var(--basket-brown);
+            border-radius: 100px 100px 0 0; position: absolute;
+            top: -55px; left: 50%; transform: translateX(-50%);
+            border-bottom: none; z-index: 1;
+        }
+        .basket-body {
+            background: var(--basket-light);
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0,0,0,0.1) 10px, rgba(0,0,0,0.1) 20px),
+                              repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(0,0,0,0.1) 10px, rgba(0,0,0,0.1) 20px);
+            border-radius: 20px 20px 50px 50px; min-height: 130px;
+            padding: 20px; position: relative; z-index: 2;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* --- UNIKÁTNÍ KRASLICE --- */
         .egg {
-            width: 35px; height: 45px; border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
-            box-shadow: inset -3px -3px 5px rgba(0,0,0,0.2);
+            width: 45px; height: 60px; border-radius: 50% 50% 50% 50% / 65% 65% 35% 35%;
+            box-shadow: inset -5px -8px 10px rgba(0,0,0,0.2), 2px 4px 6px rgba(0,0,0,0.1);
+            animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .e1 { background: #f87171; } .e2 { background: #60a5fa; } .e3 { background: #fbbf24; }
-        .e4 { background: #a78bfa; } .e5 { background: #4ade80; } .e6 { background: #f472b6; }
-        .e7 { background: #2dd4bf; } .e8 { background: #fb923c; } .e9 { background: #818cf8; }
-        .e10 { background: #be185d; }
-        .egg-bad { background: #451a03; transform: rotate(20deg); }
+        @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
 
-        /* SCHOVÁVÁNÍ PRVKŮ */
-        .hidden { display: none !important; }
+        .p1 { background: #f87171; border: 2px solid white; }
+        .p2 { background: #60a5fa; background-image: radial-gradient(white 20%, transparent 20%); background-size: 10px 10px; }
+        .p3 { background: #fbbf24; background-image: repeating-linear-gradient(0deg, transparent, transparent 5px, rgba(255,255,255,0.3) 5px, rgba(255,255,255,0.3) 10px); }
+        .p4 { background: #a78bfa; border-top: 6px solid rgba(255,255,255,0.5); }
+        .p5 { background: #4ade80; background-image: radial-gradient(circle, white 10%, transparent 11%); background-size: 8px 8px; }
+        .p6 { background: #f472b6; border: 3px dashed white; box-sizing: border-box; }
+        .p7 { background: #2dd4bf; background-image: linear-gradient(45deg, white 10%, transparent 10%); background-size: 10px 10px; }
+        .p8 { background: #fb923c; border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%; }
+        .p9 { background: #818cf8; background-image: repeating-radial-gradient(circle, transparent, transparent 5px, rgba(255,255,255,0.2) 5px, rgba(255,255,255,0.2) 10px); }
+        .p10 { background: #be185d; border-bottom: 8px solid rgba(255,255,255,0.3); }
+        .egg-bad { background: #451a03; transform: rotate(-20deg); }
 
-        /* OSLAVA */
-        #win-screen {
+        /* --- VÍTĚZSTVÍ --- */
+        #win-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #166534; color: white;
+            background: rgba(22, 101, 52, 0.98); z-index: 100;
             display: none; flex-direction: column; align-items: center; justify-content: center;
-            z-index: 100;
+            color: white; text-align: center; padding: 20px;
         }
-        .btn { background: #22c55e; color: white; border: none; padding: 15px 25px; border-radius: 50px; font-weight: bold; margin-top: 10px; }
+        .win-card { background: white; color: #333; padding: 30px; border-radius: 30px; box-shadow: 0 0 50px rgba(0,0,0,0.5); }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>🐣 Velikonoční Lov</h1>
+<div class="cloud c1"></div>
+<div class="cloud c2"></div>
+
+<div class="card">
+    <h1>🐣 Velikonoční Lov 🐣</h1>
     
-    <div id="ukol-kontainer" class="hidden">
-        <h2 id="ukol-titulek" style="color: #d97706; margin-bottom: 5px;">Úkol</h2>
-        <p id="ukol-zadani" style="margin-top: 0;">...</p>
-        <input type="text" id="odpoved-input" style="padding: 10px; border-radius: 10px; border: 1px solid #ccc; width: 80%;" placeholder="Tvoje odpověď">
-        <br>
-        <button id="potvrdit-btn" class="btn">Odeslat</button>
-        <p id="feedback" style="font-weight: bold;"></p>
-    </div>
-
-    <div id="uvod">
-        <p>Najdi 10 kraslic schovaných po škole!</p>
-    </div>
-
-    <div class="basket" id="kosik">
+    <div id="game-ui">
+        <div id="quest-area" class="hidden">
+            <h2 id="q-title" style="margin:0; color:#d97706">Úkol</h2>
+            <p id="q-text" style="font-size: 1.1rem;"></p>
+            <div class="quest-box">
+                <input type="text" id="ans-input" placeholder="Tvoje odpověď">
+                <br>
+                <button id="check-btn" class="btn-check">Zkontrolovat</button>
+            </div>
+            <div id="feedback" style="font-weight:bold; min-height: 1.5em;"></div>
         </div>
-    <p><b>V košíku: <span id="pocet">0</span> / 10</b></p>
 
-    <div id="zkazene-area" class="hidden">
-        <p style="color: #78350f; font-size: 0.8rem;">☣️ Máš zkažené vajíčko!</p>
-        <div id="zkazene-egg" style="display: flex; justify-content: center;"></div>
+        <div id="intro">
+            <p>Najdi 10 kraslic schovaných po škole a naplň svůj košík!</p>
+            <p><b>Naskenuj QR kód pro start.</b></p>
+        </div>
     </div>
 
-    <button id="reset-btn" style="background: none; border: none; color: #94a3b8; text-decoration: underline; font-size: 0.7rem; margin-top: 20px;">Restartovat</button>
+    <div class="basket-area">
+        <div class="basket-handle"></div>
+        <div id="basket-content" class="basket-body"></div>
+        <p style="font-weight:bold; color:var(--basket-brown); margin-top:15px;">
+            Stav košíku: <span id="egg-count">0</span> / 10
+        </p>
+    </div>
+
+    <div id="bad-egg-area" class="hidden" style="margin-top:10px;">
+        <p style="color:#78350f; font-size:0.8rem; margin:0">☣️ Našel jsi zkažené vajíčko!</p>
+        <div id="bad-egg-content" style="display:flex; justify-content:center"></div>
+    </div>
+
+    <button id="reset-btn" style="background:none; border:none; color:#94a3b8; text-decoration:underline; font-size:0.7rem; margin-top:20px; cursor:pointer">Restartovat hru</button>
 </div>
 
-<div id="win-screen">
-    <h1>🎉 MÁŠ VŠECHNA!</h1>
-    <div style="background: white; color: #333; padding: 20px; border-radius: 20px; width: 80%;">
-        <p>Skvělá práce! Běž si do <b>ŘEDITELNY</b> pro svou zaslouženou odměnu!</p>
+<div class="grass"></div>
+
+<div id="win-overlay">
+    <div class="win-card">
+        <h1 style="font-size: 3rem; margin: 0;">🎉</h1>
+        <h2 style="color: #16a34a;">DOKONČENO!</h2>
+        <p>Nasbíral jsi všech 10 vzácných kraslic.</p>
+        <div style="background: #f0fdf4; border: 2px dashed #22c55e; padding: 20px; border-radius: 20px; margin: 20px 0;">
+            <p style="font-weight: bold; font-size: 1.2rem; color: #166534; margin: 0;">🎁 TVOJE ODMĚNA:</p>
+            <p style="margin: 10px 0 0 0;">Ukaž tuto obrazovku v <b>ŘEDITELNĚ</b> a vyzvedni si cenu!</p>
+        </div>
+        <button onclick="document.getElementById('win-overlay').style.display='none'" class="btn-check">Zavřít</button>
     </div>
-    <button onclick="document.getElementById('win-screen').style.display='none'" class="btn" style="background: #fbbf24;">Zavřít</button>
 </div>
 
 <script>
-    const data = {
-        "1": { t: "Hádanka", z: "Zoubky má a nekouše, po vlasech se toulá. Co je to?", o: "hřeben" },
-        "2": { t: "Počty", z: "Kolik vajíček je v šesti párech?", o: "12" },
-        "3": { t: "Škola", z: "Jakou barvu mají dveře do ředitelny?", o: "bílou" },
-        "4": { t: "Tradice", z: "Z čeho se plete pomlázka?", o: "z proutí" },
-        "5": { t: "Zvířata", z: "Které zvířátko nosí vajíčka?", o: "zajíček" },
-        "6": { t: "Příroda", z: "První jarní kytička?", o: "sněženka" },
-        "7": { t: "Barvy", z: "Jakou barvu má žloutek?", o: "žlutou" },
-        "8": { t: "Měsíce", z: "Ve kterém měsíci letos začíná jaro?", o: "březen" },
-        "9": { t: "Pečení", z: "Sladké pečivo, co vypadá jako beránek?", o: "beránek" },
-        "10": { t: "Finále", z: "Napiš heslo: VELIKONOCE", o: "velikonoce" },
-        "13": { t: "Fuj!", z: "Napiš 'fuj' pro izolaci zkaženého vejce.", o: "fuj", bad: true }
+    const quests = {
+        "1": { t: "Hádanka", z: "Nemá to plíce, ale dýchá to; nemá to život, ale roste to. Co je to?", o: "oheň" },
+        "2": { t: "Matematika", z: "Kolik vajíček je ve dvou kopách? (1 kopa = 60 ks)", o: "120" },
+        "3": { t: "Tradice", z: "Jak se říká pletenému proutku z vrby?", o: "pomlázka" },
+        "4": { t: "Příroda", z: "Která jarní květina má v názvu měsíc?", o: "březnovka" },
+        "5": { t: "Barvy", z: "Jaká barva vznikne smícháním červené a žluté?", o: "oranžová" },
+        "6": { t: "Logika", z: "Doplň: Svátek, který slavíme, jsou Veliko...", o: "noce" },
+        "7": { t: "Zvířata", z: "Mládě od ovce se jmenuje?", o: "jehně" },
+        "8": { t: "Hledej", z: "Jaké číslo mají dveře do ředitelny?", o: "101" },
+        "9": { t: "Šifra", z: "Napiš slovo 'KRASLICE' pozpátku.", o: "ecilsark" },
+        "10": { t: "Finále", z: "Napiš tajné heslo: ZAJÍČEK", o: "zajíček" },
+        "13": { t: "Fuj!", z: "Tohle vejce smrdí! Napiš 'fuj' pro izolaci.", o: "fuj", bad: true }
     };
 
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('ukol');
+    const urlParams = new URLSearchParams(window.location.search);
+    const qId = urlParams.get('ukol');
 
-    function update() {
-        let done = JSON.parse(localStorage.getItem('lov_v2')) || {};
-        const kosik = document.getElementById('kosik');
-        const zkazeneDiv = document.getElementById('zkazene-egg');
+    function render() {
+        let saved = JSON.parse(localStorage.getItem('velikonoce_final_2024')) || {};
+        const basket = document.getElementById('basket-content');
+        const badDiv = document.getElementById('bad-egg-content');
         let count = 0;
-        
-        kosik.innerHTML = '';
-        zkazeneDiv.innerHTML = '';
 
-        Object.keys(data).forEach(k => {
-            if (done[k]) {
+        basket.innerHTML = '';
+        badDiv.innerHTML = '';
+
+        Object.keys(quests).forEach(id => {
+            if (saved[id]) {
                 const e = document.createElement('div');
-                if (data[k].bad) {
+                if (quests[id].bad) {
                     e.className = 'egg egg-bad';
-                    zkazeneDiv.appendChild(e);
-                    document.getElementById('zkazene-area').classList.remove('hidden');
+                    badDiv.appendChild(e);
+                    document.getElementById('bad-egg-area').classList.remove('hidden');
                 } else {
                     count++;
-                    e.className = `egg e${count}`;
-                    kosik.appendChild(e);
+                    e.className = `egg p${count}`;
+                    basket.appendChild(e);
                 }
             }
         });
-        document.getElementById('pocet').innerText = count;
-        if (count >= 10) document.getElementById('win-screen').style.display = 'flex';
+
+        document.getElementById('egg-count').innerText = count;
+        if (count >= 10) document.getElementById('win-overlay').style.display = 'flex';
     }
 
-    if (id && data[id]) {
-        document.getElementById('uvod').classList.add('hidden');
-        document.getElementById('ukol-kontainer').classList.remove('hidden');
-        document.getElementById('ukol-titulek').innerText = data[id].t;
-        document.getElementById('ukol-zadani').innerText = data[id].z;
-        
-        let done = JSON.parse(localStorage.getItem('lov_v2')) || {};
-        if (done[id]) {
-            document.getElementById('feedback').innerText = "✅ Už máš v košíku!";
-            document.getElementById('odpoved-input').classList.add('hidden');
-            document.getElementById('potvrdit-btn').classList.add('hidden');
+    if (qId && quests[qId]) {
+        document.getElementById('intro').classList.add('hidden');
+        document.getElementById('quest-area').classList.remove('hidden');
+        document.getElementById('q-title').innerText = quests[qId].t;
+        document.getElementById('q-text').innerText = quests[qId].z;
+
+        let saved = JSON.parse(localStorage.getItem('velikonoce_final_2024')) || {};
+        if (saved[qId]) {
+            document.getElementById('feedback').innerHTML = "✅ Už máš v košíku!";
+            document.getElementById('ans-input').classList.add('hidden');
+            document.getElementById('check-btn').classList.add('hidden');
         }
     }
 
-    document.getElementById('potvrdit-btn').onclick = () => {
-        const val = document.getElementById('odpoved-input').value.trim().toLowerCase();
-        if (val === data[id].o.toLowerCase()) {
-            let done = JSON.parse(localStorage.getItem('lov_v2')) || {};
-            done[id] = true;
-            localStorage.setItem('lov_v2', JSON.stringify(done));
+    document.getElementById('check-btn').onclick = () => {
+        const val = document.getElementById('ans-input').value.trim().toLowerCase();
+        if (val === quests[qId].o.toLowerCase()) {
+            let saved = JSON.parse(localStorage.getItem('velikonoce_final_2024')) || {};
+            saved[qId] = true;
+            localStorage.setItem('velikonoce_final_2024', JSON.stringify(saved));
             location.reload();
         } else {
-            document.getElementById('feedback').innerText = "❌ Zkus to znovu!";
-            document.getElementById('feedback').style.color = "red";
+            document.getElementById('feedback').innerHTML = "❌ Špatně, zkus to znovu!";
+            document.getElementById('feedback').style.color = "#dc2626";
         }
     };
 
     document.getElementById('reset-btn').onclick = () => {
-        if(confirm('Vysypat košík?')) { localStorage.clear(); location.href="index.html"; }
+        if(confirm('Chceš vysypat celý košík?')) { localStorage.clear(); location.href="index.html"; }
     };
 
-    update();
+    render();
 </script>
 </body>
 </html>
